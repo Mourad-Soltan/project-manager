@@ -1,0 +1,86 @@
+@if (project) {
+  <!-- Overlay -->
+  <div class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
+
+    <!-- Modal Box -->
+    <div class="bg-slate-900 border border-white/20 w-full max-w-2xl rounded-2xl shadow-2xl relative flex flex-col max-h-[90vh]">
+
+      <!-- Header -->
+      <div class="flex items-start justify-between p-6 border-b border-white/10">
+        <div class="flex items-start gap-3">
+          <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center flex-shrink-0">
+            <span class="text-white font-bold">{{ project.name.charAt(0).toUpperCase() }}</span>
+          </div>
+          <div>
+            <h2 class="text-2xl font-bold text-white">{{ project.name }}</h2>
+            <p class="text-slate-400 text-sm mt-0.5">{{ project.description }}</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <span class="px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/20 text-blue-300 border border-blue-500/30">
+            {{ project.status }}
+          </span>
+          <button
+            (click)="closeModal()"
+            class="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-white/10 border border-transparent hover:border-white/20 transition"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Body -->
+      <div class="p-6 space-y-5 overflow-y-auto flex-1">
+
+        <!-- Progress -->
+        <div class="bg-white/5 border border-white/10 rounded-xl p-4 space-y-2">
+          <div class="flex justify-between items-center">
+            <p class="text-sm font-semibold text-slate-300">Progression</p>
+            <span class="text-sm font-bold"
+              [ngClass]="{
+                'text-green-400': getProgress() === 100,
+                'text-yellow-400': getProgress() > 0 && getProgress() < 100,
+                'text-slate-500': getProgress() === 0
+              }"
+            >{{ getProgress() }}%</span>
+          </div>
+
+          <div class="w-full bg-white/10 rounded-full h-2.5 overflow-hidden">
+            <div
+              class="h-2.5 rounded-full transition-all duration-500"
+              [ngClass]="{
+                'bg-green-400 shadow shadow-green-400/50': getProgress() === 100,
+                'bg-blue-400 shadow shadow-blue-400/50': getProgress() > 0 && getProgress() < 100,
+                'bg-slate-600': getProgress() === 0
+              }"
+              [style.width.%]="getProgress()"
+            ></div>
+          </div>
+
+          <!-- Stats row -->
+          <div class="flex gap-4 pt-1">
+            <p class="text-xs text-slate-500">
+              <span class="text-green-400 font-semibold">{{ getDoneCount() }}</span> terminées
+            </p>
+            <p class="text-xs text-slate-500">
+              <span class="text-yellow-400 font-semibold">{{ getInProgressCount() }}</span> en cours
+            </p>
+            <p class="text-xs text-slate-500">
+              <span class="text-slate-400 font-semibold">{{ getPendingCount() }}</span> en attente
+            </p>
+          </div>
+        </div>
+
+        <!-- Task List -->
+        <div>
+          <p class="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-3">Tâches</p>
+          <app-task-list [tasks]="project.tasks"></app-task-list>
+        </div>
+
+      </div>
+    </div>
+  </div>
+}

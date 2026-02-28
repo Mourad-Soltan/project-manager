@@ -1,11 +1,13 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { PriorityColorPipe } from '../../../../../../priority-color.pipe';
+import { HighlightStatusDirective } from '../../../../../../highlight-status.directive';
 
 @Component({
   selector: 'app-task-list',
   standalone: true, // ✅ si tu es en standalone
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule, FormsModule, PriorityColorPipe,HighlightStatusDirective],
   templateUrl: './task-list.html',
   styleUrl: './task-list.css',
 })
@@ -22,7 +24,7 @@ export class TaskList {
     this.tasks.push({
       title: this.newTaskTitle,
       priority: this.newTaskPriority,
-      status: 'En attente'
+      status: 'En attente',
     });
 
     this.newTaskTitle = '';
@@ -41,18 +43,5 @@ export class TaskList {
 
   cancelDelete() {
     this.taskToDeleteIndex = null;
-  }
-
-  getStatusColor(status: string): string {
-    switch (status) {
-      case 'En attente':
-        return 'border-yellow-500';
-      case 'En cours':
-        return 'border-blue-500';
-      case 'Terminé':
-        return 'border-green-500';
-      default:
-        return 'border-gray-300';
-    }
   }
 }
